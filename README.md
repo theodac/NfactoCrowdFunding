@@ -1,9 +1,5 @@
-# simple-android-crud
-Simple Android CRUD application using REST-API. This simple CRUD application using [project-rest-api](https://github.com/budasuyasa/project-rest-api) as REST-API backend, build on ExpressJS and MySQL database.
+# nfacto-crowd-funding
 
-![Simple Android CRUD](https://github.com/budasuyasa/simple-android-crud/blob/master/simpleCrud.png)
-
----
 
 
 
