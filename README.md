@@ -8,13 +8,12 @@ Simple Android CRUD application using REST-API. This simple CRUD application usi
 
 
 ### Install
-1. Make sure you have installed Android Studio, NodeJs and MySQL server on your local machine.
-2. Clone [project-rest-api](https://github.com/budasuyasa/express-rest-api) to your local machine. Config your port and database connection. Click [here](https://github.com/budasuyasa/express-rest-api/blob/master/README.md) for more details.
-3. Clone this repo to your local machine. Open Android Studio and open this project. Open up `app/src/main/java/budasuyasa/android/simplecrud/Config/ApiEndpoint.java`, and set your REST-API endpoints as shown below. If you connect to your localhost using Android Emulator, use IP 10.0.2.2:port as `BASE` URL.
+1. Soyez sur d'avoir Android Studio, NodeJS et MYSQL d'installer sur votre machine.
+2. Cloner ce l'api sur votre machine local . Configurer votre port et votre connection BDD.
+3. Cloner ce repertoire sur votre machine local. Ouvrez Android Studio et ouvrez ce projet . Configurer le fichier 'APIEndpoint.java' avec le port de votre api
 ```java
     public static String BASE = "http://10.0.2.2:3000/";
-    public static String BOOKS = BASE + "project";
 ```
-4. You are done. Debug your application using device or Android Emulator.
+4. Tout est bon. Plus qu'a vous lancer ;)
 
 
