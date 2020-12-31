@@ -2,6 +2,7 @@ package budasuyasa.android.simplecrud.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import budasuyasa.android.simplecrud.Config.ApiEndpoint;
-import budasuyasa.android.simplecrud.Models.Book;
+import budasuyasa.android.simplecrud.Models.Project;
 import budasuyasa.android.simplecrud.R;
 
 /**
@@ -39,10 +40,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         }
     }
 
-    private List<Book> mListData;
+    private List<Project> mListData;
     private Context mContext;
 
-    public BookAdapter(Context context, List<Book> listData){
+    public BookAdapter(Context context, List<Project> listData){
         mListData = listData;
         mContext = context;
     }
@@ -64,10 +65,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Book m = mListData.get(position);
-        holder.title.setText(m.getName());
+        Project m = mListData.get(position);
+        Log.d("test",m.getDescription().toString());
+        holder.title.setText(m.getTitle());
         holder.description.setText(m.getDescription());
-        Picasso.get().load(ApiEndpoint.BASE + m.getImage()).into(holder.thumbnail);
+        Picasso.get().load(ApiEndpoint.BASE + m.getPicture()).into(holder.thumbnail);
     }
 
     @Override

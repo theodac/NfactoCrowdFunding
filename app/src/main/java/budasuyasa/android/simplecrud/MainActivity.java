@@ -2,6 +2,7 @@ package budasuyasa.android.simplecrud;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -31,7 +32,7 @@ import budasuyasa.android.simplecrud.Adapter.BookAdapter;
 import budasuyasa.android.simplecrud.Adapter.RecyclerItemClickListener;
 import budasuyasa.android.simplecrud.Config.ApiEndpoint;
 import budasuyasa.android.simplecrud.Models.APIResponse;
-import budasuyasa.android.simplecrud.Models.Book;
+import budasuyasa.android.simplecrud.Models.Project;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -43,14 +44,18 @@ import okhttp3.Response;
 import static android.support.v7.widget.RecyclerView.VERTICAL;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String PREFS = "PREFS";
+    private static final String PREFS_AGE = "PREFS_AGE";
+    private static final String PREFS_NAME = "PREFS_NAME";
     RecyclerView recyclerView;
     BookAdapter recycleAdapter;
     OkHttpClient client = new OkHttpClient.Builder()
             .addNetworkInterceptor(new StethoInterceptor())
             .build();
-    private List<Book> bookList = new ArrayList<Book>();
+    private List<Project> projectList = new ArrayList<Project>();
     Gson gson = new Gson();
+    SharedPreferences sharedPreferences;
+    FloatingActionButton buttonAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,30 +63,52 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Log.d("TESTT","TESTCO");
+        sharedPreferences = getBaseContext().getSharedPreferences(PREFS, MODE_PRIVATE);
 
+        if (sharedPreferences.contains(PREFS_AGE) && sharedPreferences.contains(PREFS_NAME)) {
+
+            boolean age = sharedPreferences.getBoolean(PREFS_AGE, false);
+            String name = sharedPreferences.getString(PREFS_NAME, null);
+            Log.d("Storage", name);
+
+
+        }
         //Set floating button action (add new book)
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, AddBook.class);
+                Intent i = new Intent(MainActivity.this, AddProject.class);
                 startActivity(i);
             }
         });
+        fab.setVisibility(View.INVISIBLE);
+        if (sharedPreferences.contains(PREFS_AGE)) {
 
+            boolean age = sharedPreferences.getBoolean(PREFS_AGE, false);
+            Log.d("Storage", String.valueOf(age));
+            if(age){
+                fab.setVisibility(View.VISIBLE);
+
+            }
+
+
+        }
         //Prepare RecycleView adapter
         recyclerView= (RecyclerView) findViewById(R.id.listView);
         DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), VERTICAL);
         recyclerView.addItemDecoration(decoration);
-        recycleAdapter = new BookAdapter(this, bookList );
+        recycleAdapter = new BookAdapter(this, projectList);
         recyclerView.setAdapter(recycleAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(MainActivity.this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                final Book book = bookList.get(position);
-                Log.d("MainActivity", "onItemClick: "+book.getAuthor());
+                final Project project = projectList.get(position);
+                Log.d("MainActivity", "onItemClick: "+ project.getTitle());
 
                 // setup the alert builder
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -94,10 +121,10 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0: // dari gallery
-                                update(book);
+                                update(project);
                                 break;
                             case 1: // dari camera
-                                delete(book.getIsbn());
+                                delete(project.getId());
                                 break;
                         }
                     }
@@ -116,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
         getBooks();
     }
 
-    private void update(Book book){
-        Intent intent = new Intent(this, AddBook.class);
-        intent.putExtra("book", book);
+    private void update(Project project){
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("book", project);
         startActivity(intent);
     }
 
@@ -204,12 +231,14 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     try {
-                        final ArrayList<Book> res = gson.fromJson(response.body().string(), new TypeToken<ArrayList<Book>>(){}.getType());
+                        final ArrayList<Project> res = gson.fromJson(response.body().string(), new TypeToken<ArrayList<Project>>(){}.getType());
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                bookList.clear();
-                                bookList.addAll(res);
+                                projectList.clear();
+                                projectList.addAll(res);
+
+
                                 recycleAdapter.notifyDataSetChanged();
                             }
                         });
@@ -246,7 +275,18 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        Log.d("OK", "OK");
         if (id == R.id.action_settings) {
+            Log.d("OK", "OKE");
+            Intent show = new Intent(this, RegisterActivity.class);
+
+            startActivity(show);
+            return true;
+        }
+        if (id == R.id.action_login) {
+            Intent show = new Intent(this, LoginActivity.class);
+
+            startActivity(show);
             return true;
         }
 

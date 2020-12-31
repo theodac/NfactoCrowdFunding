@@ -13,24 +13,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.facebook.stetho.common.StringUtil;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
-import com.karumi.dexter.listener.single.PermissionListener;
 import com.kbeanie.multipicker.api.CameraImagePicker;
 import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
@@ -42,12 +35,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import budasuyasa.android.simplecrud.Config.ApiEndpoint;
 import budasuyasa.android.simplecrud.Models.APIResponse;
-import budasuyasa.android.simplecrud.Models.Book;
+import budasuyasa.android.simplecrud.Models.Project;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
@@ -62,54 +54,39 @@ import okhttp3.Response;
 /**
  * Activity untuk menambahkan dan mengupdate data buku
  */
-public class AddBook extends AppCompatActivity {
+public class AddProject extends AppCompatActivity {
 
-    //Deklarasi beberapa variabel yang dibutuhkan
-    String imagePath; //untuk menyimpan image path
-    String imageFileName; //untuk menyimpan nama file
-
-    //Define variabel sebagai flag edit mode atau tambah mode.
-    //Activity ini selain digunakan untuk menambahkan, jika digunakan untuk edit
-    //data buku
+    String imagePath;
+    String imageFileName;
     private static int EDIT_MODE = 0;
     private static int ADD_MODE = 1;
     int MODE = 1;
 
-    //Variabel untuk menampung object kiriman jika edit mode
-    Book editBook;
+    Project editProject;
 
-    //Untuk mengambil gambar dari device kita tidak akan menulis ulang.
-    //Pakai library yang sudah ada
-    //Lihat: https://github.com/coomar2841/android-multipicker-library
-    ImagePicker imagePicker; //instance image picker
-    CameraImagePicker cameraImagePicker; //instance camera image picker
+    ImagePicker imagePicker;
+    CameraImagePicker cameraImagePicker;
 
-    String TAG = getClass().getName().toString(); //untuk keperluan log, ambil nama class
-    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/jpeg"); //mime type gambar jpeg
+    String TAG = getClass().getName().toString();
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/jpeg");
 
-    //Define view widget dengan ButterKnife biar rapi (pengganti findById)
-    //Lihat: http://jakewharton.github.io/butterknife/
     @BindView(R.id.button) Button btnAddCover;
     @BindView(R.id.imageView2) ImageView imageView;
     @BindView(R.id.etISBN)
-    TextInputEditText etIsbn;
+    TextInputEditText etTitle;
     @BindView(R.id.etName)
-    TextInputEditText etName;
+    TextInputEditText etMontant;
     @BindView(R.id.etYear)
-    TextInputEditText etYear;
-    @BindView(R.id.etAuthor)
-    TextInputEditText etAuthor;
+    TextInputEditText etEnd_Date;
     @BindView(R.id.etDescription)
     TextInputEditText etDescription;
 
-    //Define okhttp dengan network interceptor agar mudah debug dengan Chrome
     OkHttpClient client = new OkHttpClient.Builder()
             .addNetworkInterceptor(new StethoInterceptor())
             .build();
 
-    Gson gson = new Gson(); //gson untuk handling json
+    Gson gson = new Gson();
 
-    //Image picker callback, untuk menghandle pengambilan gambar dari gallery/camera
     ImagePickerCallback callback = new ImagePickerCallback(){
         @Override
         public void onImagesChosen(List<ChosenImage> images) {
@@ -134,8 +111,8 @@ public class AddBook extends AppCompatActivity {
         ButterKnife.bind(this); //Bind ButterKnife
 
         //inisiaisasi ImagePicker dan CameraImagePicker
-        imagePicker = new ImagePicker(AddBook.this);
-        cameraImagePicker = new CameraImagePicker(AddBook.this);
+        imagePicker = new ImagePicker(AddProject.this);
+        cameraImagePicker = new CameraImagePicker(AddProject.this);
 
         //set callback handler
         imagePicker.setImagePickerCallback(callback);
@@ -151,24 +128,21 @@ public class AddBook extends AppCompatActivity {
 
         //beri nilai di form input agar lebih mudah
         if(getIntent().getParcelableExtra("book") != null){
-            editBook = (Book) getIntent().getParcelableExtra("book");
+            editProject = (Project) getIntent().getParcelableExtra("book");
             MODE = EDIT_MODE;
-            etIsbn.setText(editBook.getIsbn());
-            etAuthor.setText(editBook.getAuthor());
-            etName.setText(editBook.getName());
-            etYear.setText(editBook.getYear());
-            etDescription.setText(editBook.getDescription());
-            Picasso.get().load(ApiEndpoint.BASE + editBook.getImage()).into(imageView);
-            Log.d(TAG, "onCreate: "+ApiEndpoint.BASE + editBook.getImage());
+            etTitle.setText(editProject.getTitle());
+            etMontant.setText(editProject.getEnd_date());
+            etEnd_Date.setText(editProject.getMontant());
+            Picasso.get().load(ApiEndpoint.BASE + editProject.getPicture()).into(imageView);
+            Log.d(TAG, "onCreate: "+ApiEndpoint.BASE + editProject.getPicture());
 
         }else{
             MODE = ADD_MODE;
 
             //Set default isi form
-            etIsbn.setText("21212121");
-            etAuthor.setText("Buda Suyasa");
-            etName.setText("Android 101: How To Make Android Apps for Lazy People");
-            etYear.setText("2018");
+            etTitle.setText("21212121");
+            etMontant.setText("3");
+            etEnd_Date.setText("2018");
             etDescription.setText("Build Android application in no time with without reinventing +" +
                     "the wheels, by using various existing Android Library. Great book for lazy people");
         }
@@ -191,7 +165,7 @@ public class AddBook extends AppCompatActivity {
                     //untuk memilih gambar diambil dari gallery atau camera
 
                     // setup the alert builder
-                    AlertDialog.Builder builder = new AlertDialog.Builder(AddBook.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AddProject.this);
                     builder.setTitle("Pick image from?");
 
                     // add a list
@@ -232,14 +206,14 @@ public class AddBook extends AppCompatActivity {
         if(resultCode == RESULT_OK) {
             if(requestCode == Picker.PICK_IMAGE_DEVICE) {
                 if(imagePicker == null) {
-                    imagePicker = new ImagePicker(AddBook.this);
+                    imagePicker = new ImagePicker(AddProject.this);
                     imagePicker.setImagePickerCallback(callback);
                 }
                 imagePicker.submit(data);
             }
             if(requestCode == Picker.PICK_IMAGE_CAMERA) {
                 if(cameraImagePicker == null) {
-                    cameraImagePicker = new CameraImagePicker(AddBook.this);
+                    cameraImagePicker = new CameraImagePicker(AddProject.this);
                     cameraImagePicker.reinitialize(imagePath);
                     // OR in one statement
                     // imagePicker = new CameraImagePicker(Activity.this, outputPath);
@@ -308,17 +282,15 @@ public class AddBook extends AppCompatActivity {
      */
     private void saveBook(){
         //Get nilai edit text, assign ke variabel
-        String isbn = etIsbn.getText().toString();
-        String name = etName.getText().toString();
-        String year = etYear.getText().toString();
-        String author = etAuthor.getText().toString();
+        String title = etTitle.getText().toString();
+        String montant = etMontant.getText().toString();
+        String end_date = etEnd_Date.getText().toString();
         String description = etDescription.getText().toString();
 
         //Tambahkan sedikit validasi, jangan simpan jika edit text masih kosong
-        if(StringUtils.isEmpty(isbn)) return;
-        if(StringUtils.isEmpty(name)) return;
-        if(StringUtils.isEmpty(year)) return;
-        if(StringUtils.isEmpty(author)) return;
+        if(StringUtils.isEmpty(title)) return;
+        if(StringUtils.isEmpty(montant)) return;
+        if(StringUtils.isEmpty(end_date)) return;
         if(StringUtils.isEmpty(description)) return;
 
         //Sesuaikan parameter input. Jika edit mode, gambar tidak harus diisi
@@ -333,10 +305,9 @@ public class AddBook extends AppCompatActivity {
             //Buat parameter input form
             requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("isbn", isbn)
-                    .addFormDataPart("name", name)
-                    .addFormDataPart("year", year)
-                    .addFormDataPart("author", author)
+                    .addFormDataPart("title", title)
+                    .addFormDataPart("montant", montant)
+                    .addFormDataPart("end_date", end_date)
                     .addFormDataPart("description", description)
                     .addFormDataPart("image", imageFileName,
                             RequestBody.create(MEDIA_TYPE_PNG, new File(imagePath)))
@@ -348,25 +319,23 @@ public class AddBook extends AppCompatActivity {
                 //Buat parameter input form
                 requestBody = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
-                        .addFormDataPart("isbn", isbn)
-                        .addFormDataPart("name", name)
-                        .addFormDataPart("year", year)
-                        .addFormDataPart("author", author)
+                        .addFormDataPart("title", title)
+                        .addFormDataPart("montant", montant)
+                        .addFormDataPart("end_date", end_date)
                         .addFormDataPart("description", description)
                         .build();
             }else{
                 requestBody = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
-                        .addFormDataPart("isbn", isbn)
-                        .addFormDataPart("name", name)
-                        .addFormDataPart("year", year)
-                        .addFormDataPart("author", author)
+                        .addFormDataPart("title", title)
+                        .addFormDataPart("montant", montant)
+                        .addFormDataPart("end_date", end_date)
                         .addFormDataPart("description", description)
                         .addFormDataPart("image", imageFileName,
                                 RequestBody.create(MEDIA_TYPE_PNG, new File(imagePath)))
                         .build();
             }
-            URL = ApiEndpoint.BOOKS+"/"+isbn+"/update";
+            URL = ApiEndpoint.BOOKS+"/"+title+"/update";
         }
 
         Request request = new Request.Builder()
@@ -378,11 +347,11 @@ public class AddBook extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
-                AddBook.this.runOnUiThread(new Runnable() {
+                AddProject.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Log.d("Main Activity", e.getMessage());
-                        Toast.makeText(AddBook.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddProject.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -392,17 +361,17 @@ public class AddBook extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     try {
                         //Finish activity
-                        AddBook.this.runOnUiThread(new Runnable() {
+                        AddProject.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 APIResponse res =  gson.fromJson(response.body().charStream(), APIResponse.class);
                                 //Jika response success, finish activity
                                 if(StringUtils.equals(res.getStatus(), "success")){
-                                    Toast.makeText(AddBook.this, "Book saved!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AddProject.this, "Book saved!", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }else{
                                     //Tampilkan error jika ada
-                                    Toast.makeText(AddBook.this, "Error: "+res.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AddProject.this, "Error: "+res.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -413,10 +382,10 @@ public class AddBook extends AppCompatActivity {
                     }
 
                 } else {
-                    AddBook.this.runOnUiThread(new Runnable() {
+                    AddProject.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(AddBook.this, "Server error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddProject.this, "Server error", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

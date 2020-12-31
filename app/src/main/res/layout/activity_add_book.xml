@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddBook"
+    tools:context=".AddProject"
     android:padding="10dp"
     >
     <android.support.design.widget.TextInputLayout
@@ -15,11 +15,12 @@
         android:layout_alignParentLeft="true"
         android:id="@+id/ilisbn"
         >
+
         <android.support.design.widget.TextInputEditText
             android:id="@+id/etISBN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="ISBN" />
+            android:hint="Title" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -30,11 +31,13 @@
         android:layout_alignParentLeft="true"
         android:id="@+id/ilname"
         >
+
         <android.support.design.widget.TextInputEditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="Montant"
+            android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -44,11 +47,12 @@
         android:layout_alignParentLeft="true"
         android:id="@+id/ilyear"
         >
+
         <android.support.design.widget.TextInputEditText
             android:id="@+id/etYear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Year" />
+            android:hint="Date de fin" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -57,13 +61,7 @@
         android:layout_below="@+id/ilyear"
         android:layout_alignParentLeft="true"
         android:id="@+id/ilauthor"
-        >
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/etAuthor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Author" />
-    </android.support.design.widget.TextInputLayout>
+        />
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
