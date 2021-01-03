@@ -98,6 +98,7 @@ public class DetailActivity extends AppCompatActivity {
                 Log.d("Good","Good" +new Gson().toJson(response.body()));
                 final Gson gson = new Gson();
                 final SommeDon entity = gson.fromJson(response.body().string(), SommeDon.class);
+
                 Log.d("APIR", String.valueOf(entity.getTOTAL_COSTS()));
 
                 if (response.isSuccessful()) {

@@ -1,9 +1,13 @@
 package budasuyasa.android.simplecrud;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("TESTT","TESTCO");
         sharedPreferences = getBaseContext().getSharedPreferences(PREFS, MODE_PRIVATE);
 
+
         if (sharedPreferences.contains(PREFS_AGE) && sharedPreferences.contains(PREFS_NAME)) {
 
             boolean age = sharedPreferences.getBoolean(PREFS_AGE, false);
@@ -111,27 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", "onItemClick: "+ project.getTitle());
 
                 // setup the alert builder
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("What do you want to do?");
-
-                // add a list
-                String[] menus = {"Update", "Delete"};
-                builder.setItems(menus, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0: // dari gallery
-                                update(project);
-                                break;
-                            case 1: // dari camera
-                                delete(project.getId());
-                                break;
-                        }
-                    }
-                });
-                // create and show the alert dialog
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                update(project);
             }
 
             @Override
@@ -140,9 +125,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        getBooks();
+            getBooks();
+
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     private void update(Project project){
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("book", project);
@@ -167,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
                         Log.d("Main Activity", e.getMessage());
                         Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -221,7 +214,10 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("Main Activity", e.getMessage());
+                        Log.d("OFF","OFFILE");
+                        projectList = new Gson().<ArrayList<Project>>fromJson(PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("My_SAVED_LIST", ""), new TypeToken<ArrayList<Project>>() {
+                        }.getType());
+                        Log.d("Main Activitye", e.getMessage());
                         Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -237,6 +233,11 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 projectList.clear();
                                 projectList.addAll(res);
+                                String mySavedList= new Gson().toJson(projectList);
+                                PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("My_SAVED_LIST", mySavedList).apply();
+
+
+
 
 
                                 recycleAdapter.notifyDataSetChanged();
