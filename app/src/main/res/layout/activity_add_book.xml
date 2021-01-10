@@ -52,7 +52,8 @@
             android:id="@+id/etYear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Date de fin" />
+            android:hint="Date de fin"
+            android:inputType="date" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

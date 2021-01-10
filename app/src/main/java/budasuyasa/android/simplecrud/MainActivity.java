@@ -29,7 +29,10 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import budasuyasa.android.simplecrud.Adapter.BookAdapter;
@@ -113,10 +116,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 final Project project = projectList.get(position);
-                Log.d("MainActivity", "onItemClick: "+ project.getTitle());
+                Log.d("MainActivity", "onItemClick: "+ project.getEnd_date());
 
                 // setup the alert builder
-                update(project);
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date parsed = sdf.parse(project.getEnd_date());
+
+                    Date now = new Date(); // 2016-03-10 22:06:10
+                    Log.d("DATE", project.getEnd_date() + ' ' + now.toString());
+                    if(parsed.compareTo(now) == -1){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle("Le projet est terminé");
+
+                        // add a list
+
+                        // create and show the alert dialog
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }else{
+                        update(project);
+
+                    }
+
+                    System.out.println(parsed.compareTo(now));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
 
             @Override
