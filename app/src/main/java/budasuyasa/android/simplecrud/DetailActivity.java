@@ -73,7 +73,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
         Request request = new Request.Builder()
-                .url(URL) //Ingat sesuaikan dengan URL
+                .url(URL)
                 .get()
                 .build();
 
@@ -95,11 +95,9 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                Log.d("Good","Good" +new Gson().toJson(response.body()));
                 final Gson gson = new Gson();
                 final SommeDon entity = gson.fromJson(response.body().string(), SommeDon.class);
 
-                Log.d("APIR", String.valueOf(entity.getTOTAL_COSTS()));
 
                 if (response.isSuccessful()) {
                     try {
@@ -108,7 +106,6 @@ public class DetailActivity extends AppCompatActivity {
                             public void run() {
                                 if(response.code() == 200){
                                     int percent = (int)((entity.getTOTAL_COSTS() * 100.0f) / Integer.parseInt(editProject.getMontant().toString()));
-                                    Log.d("PERCENT", String.valueOf(percent));
                                     String percentD = Integer.toString(percent) + "%";
                                     etAmount.setText(percentD);
                                 }else{

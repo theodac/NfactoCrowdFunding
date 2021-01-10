@@ -111,13 +111,16 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 Log.d("Good","Good");
+                final APIResponse   res = gson.fromJson(response.body().string(), APIResponse.class);
 
                 if (response.isSuccessful()) {
                     try {
                         RegisterActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                APIResponse res =  gson.fromJson(response.body().charStream(), APIResponse.class);
+
+
+                                Log.d("API",res.getStatus());
                                 if(StringUtils.equals(res.getStatus(), "success")){
                                     Toast.makeText(RegisterActivity.this, "Inscription réussi ! ", Toast.LENGTH_SHORT).show();
                                     finish();
