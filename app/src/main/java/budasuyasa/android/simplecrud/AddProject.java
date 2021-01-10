@@ -280,7 +280,7 @@ public class AddProject extends AppCompatActivity {
     /**
      * Save data buku ketika user mengklik menu SAVE
      */
-    private void saveBook(){
+    public void saveBook(){
         //Get nilai edit text, assign ke variabel
         String title = etTitle.getText().toString();
         String montant = etMontant.getText().toString();
