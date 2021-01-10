@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         Log.d("TESTE", username + pseudo + password + birthday);
 
-       if(StringUtils.isEmpty(username)) return;
+        if(StringUtils.isEmpty(username)) return;
         if(StringUtils.isEmpty(pseudo)) return;
         if(StringUtils.isEmpty(password)) return;
         if(StringUtils.isEmpty(birthday)) return;

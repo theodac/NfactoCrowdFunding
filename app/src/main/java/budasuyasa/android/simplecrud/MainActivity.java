@@ -235,11 +235,6 @@ public class MainActivity extends AppCompatActivity {
                                 projectList.addAll(res);
                                 String mySavedList= new Gson().toJson(projectList);
                                 PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("My_SAVED_LIST", mySavedList).apply();
-
-
-
-
-
                                 recycleAdapter.notifyDataSetChanged();
                             }
                         });

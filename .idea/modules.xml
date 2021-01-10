@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Document-simple-android-crud.iml" filepath="$PROJECT_DIR$/.idea/modules/Document-simple-android-crud.iml" group="simple-android-crud" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/simple-android-crud.iml" filepath="$PROJECT_DIR$/simple-android-crud.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/simple-android-crud-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/simple-android-crud-app.iml" group="simple-android-crud/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/NfactoCrowdFunding.iml" filepath="$PROJECT_DIR$/.idea/modules/NfactoCrowdFunding.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/NfactoCrowdFunding.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/NfactoCrowdFunding.app.iml" />
     </modules>
   </component>
 </project>
