@@ -292,7 +292,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        sharedPreferences = getBaseContext().getSharedPreferences(PREFS, MODE_PRIVATE);
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        if (sharedPreferences.contains(PREFS_AGE)) {
+
+            boolean age = sharedPreferences.getBoolean(PREFS_AGE, false);
+            if(age){
+                MenuItem item = menu.findItem(R.id.Logout);
+                item.setVisible(true);
+                MenuItem items = menu.findItem(R.id.action_login);
+                items.setVisible(false);
+                MenuItem items2 = menu.findItem(R.id.action_settings);
+                items2.setVisible(false);
+
+            }else{
+
+                MenuItem item = menu.findItem(R.id.Logout);
+                item.setVisible(false);
+                MenuItem items = menu.findItem(R.id.action_login);
+                items.setVisible(true);
+            }
+
+        }
         return true;
     }
 
@@ -314,6 +336,20 @@ public class MainActivity extends AppCompatActivity {
         }
         if (id == R.id.action_login) {
             Intent show = new Intent(this, LoginActivity.class);
+
+            startActivity(show);
+            return true;
+        }
+
+        if (id == R.id.Logout) {
+            sharedPreferences = getBaseContext().getSharedPreferences("PREFS", MODE_PRIVATE);
+
+            sharedPreferences
+                    .edit()
+                    .putBoolean(PREFS_AGE, false)
+                    .putString(PREFS_NAME, "florent")
+                    .apply();
+            Intent show = new Intent(this, MainActivity.class);
 
             startActivity(show);
             return true;
