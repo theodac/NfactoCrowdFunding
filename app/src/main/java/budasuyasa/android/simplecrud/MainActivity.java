@@ -279,23 +279,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         sharedPreferences = getBaseContext().getSharedPreferences(PREFS, MODE_PRIVATE);
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem logout = menu.findItem(R.id.Logout);
+        MenuItem login = menu.findItem(R.id.action_login);
+        MenuItem register = menu.findItem(R.id.action_settings);
 
         if (sharedPreferences.contains(PREFS_AGE)) {
-
             boolean age = sharedPreferences.getBoolean(PREFS_AGE, false);
-            MenuItem item = menu.findItem(R.id.Logout);
-            MenuItem items = menu.findItem(R.id.action_login);
-            MenuItem items2 = menu.findItem(R.id.action_settings);
             if(age) {
-                item.setVisible(true);
-                items.setVisible(false);
-                items2.setVisible(false);
-            } else {
-                item.setVisible(false);
-                items.setVisible(true);
-                items2.setVisible(true);
+                logout.setVisible(true);
+                login.setVisible(false);
+                register.setVisible(false);
             }
-
+        } else {
+            logout.setVisible(false);
+            login.setVisible(true);
+            register.setVisible(true);
         }
         return true;
     }

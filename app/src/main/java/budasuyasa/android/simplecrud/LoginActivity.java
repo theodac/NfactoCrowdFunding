@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText etUsername;
     EditText etPassword;
     Button btnAddCover;
-    TextView textResult;
     SharedPreferences sharedPreferences;
 
     private static final String PREFS_AGE = "PREFS_AGE";
@@ -50,17 +49,10 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = (EditText) findViewById(R.id.username2);
         etPassword = (EditText) findViewById(R.id.password2);
         btnAddCover = (Button) findViewById(R.id.login2);
-        textResult = (TextView) findViewById(R.id.txt_result2);
 
         btnAddCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
-                if (etPassword.toString().equals("passwordtest") && etUsername.toString().equals("test@test.fr")) {
-                    textResult.setText("OK");
-                    Log.d("MARCHE","MARCHE");
-                } else {
-                    textResult.setText("KO");
-                }
                 login(view);
             }
         });
