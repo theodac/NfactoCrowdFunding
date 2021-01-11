@@ -129,6 +129,10 @@ public class DonActivity extends AppCompatActivity {
                                 if(StringUtils.equals(res.getStatus(), "success")){
                                     Toast.makeText(DonActivity.this, "Merci pour votre don !", Toast.LENGTH_SHORT).show();
                                     finish();
+                                    Intent show = new Intent(DonActivity.this, DetailActivity.class);
+                                    show.putExtra("book", editProject);
+
+                                    startActivity(show);
                                 }else{
                                     Toast.makeText(DonActivity.this, "Error: "+res.getMessage(), Toast.LENGTH_SHORT).show();
                                 }

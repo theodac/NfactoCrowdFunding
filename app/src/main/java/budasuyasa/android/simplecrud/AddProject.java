@@ -315,12 +315,13 @@ public class AddProject extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                final APIResponse res =  gson.fromJson(response.body().string(), APIResponse.class);
+
                 if (response.isSuccessful()) {
                     try {
                         AddProject.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                APIResponse res =  gson.fromJson(response.body().charStream(), APIResponse.class);
                                 if(StringUtils.equals(res.getStatus(), "success")){
                                     Toast.makeText(AddProject.this, "Book saved!", Toast.LENGTH_SHORT).show();
                                     finish();
