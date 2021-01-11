@@ -36,7 +36,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText etPassword;
     EditText etBirthday;
     Button btnAddCover;
-    TextView textResult;
 
     OkHttpClient client = new OkHttpClient.Builder()
             .addNetworkInterceptor(new StethoInterceptor())
@@ -53,22 +52,11 @@ public class RegisterActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.password);
         etBirthday = findViewById(R.id.birthday);
         btnAddCover = findViewById(R.id.login);
-        textResult = findViewById(R.id.txt_result);
 
         btnAddCover.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                if (etPseudo.toString().equals("pseudotest")
-                    && etPassword.toString().equals("passwordtest")
-                    && etUsername.toString().equals("test@test.fr")
-                    && etBirthday.toString().equals("01/01/0001")
-                ) {
-                    textResult.setText("OK");
-                    Log.d("MARCHE","MARCHE");
-                } else {
-                    textResult.setText("KO");
-                }
                 register();
             }
         });
