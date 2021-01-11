@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText etUsername;
     EditText etPassword;
     Button btnAddCover;
+    TextView textResult;
     SharedPreferences sharedPreferences;
 
     private static final String PREFS_AGE = "PREFS_AGE";
@@ -48,11 +50,17 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = (EditText) findViewById(R.id.username2);
         etPassword = (EditText) findViewById(R.id.password2);
         btnAddCover = (Button) findViewById(R.id.login2);
+        textResult = (TextView) findViewById(R.id.txt_result2);
 
         btnAddCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
-                Log.d("MARCHE","MARCHE");
+                if (etPassword.toString().equals("passwordtest") && etUsername.toString().equals("test@test.fr")) {
+                    textResult.setText("OK");
+                    Log.d("MARCHE","MARCHE");
+                } else {
+                    textResult.setText("KO");
+                }
                 login(view);
             }
         });
@@ -81,11 +89,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
         Request request = new Request.Builder()
-                .url(URL) //Ingat sesuaikan dengan URL
+                .url(URL)
                 .post(requestBody)
                 .build();
 
-        //Handle response dari request
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -123,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if(response.code() == 200){
-                                    Toast.makeText(LoginActivity.this, "Connexion réussi ! ", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Connexion réussie ! ", Toast.LENGTH_SHORT).show();
                                     sharedPreferences = getBaseContext().getSharedPreferences("PREFS", MODE_PRIVATE);
 
 

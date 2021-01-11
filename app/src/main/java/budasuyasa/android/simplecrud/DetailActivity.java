@@ -69,7 +69,7 @@ public class DetailActivity extends AppCompatActivity {
     private void getDons(){
         String URL = "";
 
-        URL = ApiEndpoint.SUMDON + editProject.getId().toString();
+        URL = ApiEndpoint.SUMDON + editProject.getId();
 
 
         Request request = new Request.Builder()
@@ -77,7 +77,6 @@ public class DetailActivity extends AppCompatActivity {
                 .get()
                 .build();
 
-        //Handle response dari request
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -107,7 +106,7 @@ public class DetailActivity extends AppCompatActivity {
                                 if(response.code() == 200){
                                     int percent = (int)((entity.getTOTAL_COSTS() * 100.0f) / Integer.parseInt(editProject.getMontant().toString()));
                                     String percentD = Integer.toString(percent) + "%";
-                                    etAmount.setText(percentD);
+                                    etAmount.setText("Pourcentage de remplissage de la cagnotte: " + percentD);
                                 }else{
 
                                     Toast.makeText(DetailActivity.this, "Error: "+response.code(), Toast.LENGTH_SHORT).show();

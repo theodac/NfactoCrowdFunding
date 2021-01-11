@@ -20,7 +20,7 @@
             android:id="@+id/etISBN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title" />
+            android:hint="Titre" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -36,7 +36,7 @@
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Montant"
+            android:hint="Montant de la cagnotte"
             android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -52,7 +52,7 @@
             android:id="@+id/etYear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Date de fin"
+            android:hint="Date de fin de collecte"
             android:inputType="date" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -83,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ildescription"
-        android:text="Add Cover" />
+        android:text="Ajouter une couverture" />
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"

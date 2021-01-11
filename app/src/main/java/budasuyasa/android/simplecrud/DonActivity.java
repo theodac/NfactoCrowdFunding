@@ -100,11 +100,10 @@ public class DonActivity extends AppCompatActivity {
             URL = ApiEndpoint.DONS;
 
         Request request = new Request.Builder()
-                .url(URL) //Ingat sesuaikan dengan URL
+                .url(URL)
                 .post(requestBody)
                 .build();
 
-        //Handle response dari request
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -128,7 +127,7 @@ public class DonActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if(StringUtils.equals(res.getStatus(), "success")){
-                                    Toast.makeText(DonActivity.this, "Don enregistré!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DonActivity.this, "Merci pour votre don !", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }else{
                                     Toast.makeText(DonActivity.this, "Error: "+res.getMessage(), Toast.LENGTH_SHORT).show();

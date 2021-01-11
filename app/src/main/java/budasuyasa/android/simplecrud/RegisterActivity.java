@@ -103,11 +103,10 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         Request request = new Request.Builder()
-                .url(URL) //Ingat sesuaikan dengan URL
+                .url(URL)
                 .post(requestBody)
                 .build();
 
-        //Handle response dari request
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -135,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 Log.d("API",res.getStatus());
                                 if(StringUtils.equals(res.getStatus(), "success")){
-                                    Toast.makeText(RegisterActivity.this, "Inscription réussi ! ", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterActivity.this, "Inscription réussie ! ", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }else{
                                     Toast.makeText(RegisterActivity.this, "Error: "+res.getMessage(), Toast.LENGTH_SHORT).show();

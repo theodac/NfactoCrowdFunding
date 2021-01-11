@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-        //Set floating button action (add new book)
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-        //Prepare RecycleView adapter
+
         recyclerView= (RecyclerView) findViewById(R.id.listView);
         DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), VERTICAL);
         recyclerView.addItemDecoration(decoration);
@@ -118,20 +118,17 @@ public class MainActivity extends AppCompatActivity {
                 final Project project = projectList.get(position);
                 Log.d("MainActivity", "onItemClick: "+ project.getEnd_date());
 
-                // setup the alert builder
+
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date parsed = sdf.parse(project.getEnd_date());
 
-                    Date now = new Date(); // 2016-03-10 22:06:10
+                    Date now = new Date();
                     Log.d("DATE", project.getEnd_date() + ' ' + now.toString());
                     if(parsed.compareTo(now) == -1){
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setTitle("Le projet est terminé");
 
-                        // add a list
-
-                        // create and show the alert dialog
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     }else{
@@ -170,17 +167,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void delete(String isbn) {
-        //Buat request body mulipart
+
         RequestBody formBody = new FormBody.Builder()
                 .add("isbn", isbn)
                 .build();
 
         Request request = new Request.Builder()
-                .url(ApiEndpoint.BOOKS+"/"+isbn+"/delete") //Ingat sesuaikan dengan URL
+                .url(ApiEndpoint.BOOKS+"/"+isbn+"/delete")
                 .post(formBody)
                 .build();
 
-        //Handle response dari request
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -198,13 +195,11 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, final Response response) throws IOException {
                 if (response.isSuccessful()) {
                     try {
-                        //Finish activity
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 APIResponse res =  gson.fromJson(response.body().charStream(), APIResponse.class);
                                 if(StringUtils.equals(res.getStatus(), "success")){
-                                    //Refresh book
                                     getBooks();
                                 }
                             }
@@ -227,15 +222,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Get Book from REST-API and populate into RecycleView
-     */
     private void getBooks(){
         Request request = new Request.Builder()
                 .url(ApiEndpoint.BOOKS)
                 .build();
 
-        //Handle response dari request
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -286,27 +277,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         sharedPreferences = getBaseContext().getSharedPreferences(PREFS, MODE_PRIVATE);
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         if (sharedPreferences.contains(PREFS_AGE)) {
 
             boolean age = sharedPreferences.getBoolean(PREFS_AGE, false);
-            if(age){
-                MenuItem item = menu.findItem(R.id.Logout);
+            MenuItem item = menu.findItem(R.id.Logout);
+            MenuItem items = menu.findItem(R.id.action_login);
+            MenuItem items2 = menu.findItem(R.id.action_settings);
+            if(age) {
                 item.setVisible(true);
-                MenuItem items = menu.findItem(R.id.action_login);
                 items.setVisible(false);
-                MenuItem items2 = menu.findItem(R.id.action_settings);
                 items2.setVisible(false);
-
-            }else{
-
-                MenuItem item = menu.findItem(R.id.Logout);
+            } else {
                 item.setVisible(false);
-                MenuItem items = menu.findItem(R.id.action_login);
                 items.setVisible(true);
+                items2.setVisible(true);
             }
 
         }
@@ -315,12 +302,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         Log.d("OK", "OK");
         if (id == R.id.action_settings) {
             Log.d("OK", "OKE");
