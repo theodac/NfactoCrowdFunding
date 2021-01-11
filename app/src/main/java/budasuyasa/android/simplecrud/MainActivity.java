@@ -318,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.Logout) {
+            Toast.makeText(MainActivity.this, "Déconnexion réussie !", Toast.LENGTH_SHORT).show();
             sharedPreferences = getBaseContext().getSharedPreferences("PREFS", MODE_PRIVATE);
 
             sharedPreferences
