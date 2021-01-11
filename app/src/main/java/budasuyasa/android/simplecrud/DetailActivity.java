@@ -33,6 +33,7 @@ public class DetailActivity extends AppCompatActivity {
     Project editProject;
     TextView etTitle;
     TextView etAmount;
+    TextView etAmountTotal;
     TextView etDescription;
     Button etButton;
     ImageView etImage;
@@ -46,13 +47,16 @@ public class DetailActivity extends AppCompatActivity {
 
         etTitle = (TextView) findViewById(R.id.title);
         etAmount = (TextView) findViewById(R.id.amount);
+        etAmountTotal = (TextView) findViewById(R.id.montantTotal);
         etDescription = (TextView) findViewById(R.id.description);
         etButton = (Button) findViewById(R.id.don);
         etImage = (ImageView) findViewById(R.id.imageP);
         editProject = (Project) getIntent().getParcelableExtra("book");
+        String amountT = "Montant de la cagnotte : " + editProject.getMontant() + "€";
 
         etTitle.setText(editProject.getTitle());
         etAmount.setText(editProject.getMontant());
+        etAmountTotal.setText(amountT);
         etDescription.setText(editProject.getDescription());
         etButton.setOnClickListener(new View.OnClickListener() {
             @Override
